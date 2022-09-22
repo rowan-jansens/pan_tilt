@@ -64,10 +64,10 @@ void loop() {
 
 
   // Moves servo into scanning position
-  pan_servo.write(pos);                               // initialize position of pan servo
-  tilt_servo.write(pos);
-  pan_servo.write(start_psweep);                      // moves to left side to begin the sweep
-  tilt_servo.write(start_tsweep);                     // initialize position of tilt servo
+//  pan_servo.write(pos);                               // initialize position of pan servo
+//  tilt_servo.write(pos);
+//  pan_servo.write(start_psweep);                      // moves to left side to begin the sweep
+//  tilt_servo.write(start_tsweep);                     // initialize position of tilt servo
 
 
   // Variables for calculating avg dist points
@@ -85,6 +85,7 @@ void loop() {
 
           // pans then mini tilts 
           move_servos(start_psweep, start_tsweep);
+          delay(100);
 
           // takes data at the mini tilts peak
           for (i = 0; i <= 10; i++) {
@@ -98,19 +99,19 @@ void loop() {
 
           // mini delay before tilts back down then loops again
           delay(100);
-          tilt_servo.write(start_tsweep-5);
+//          tilt_servo.write(start_tsweep-5);
       }
-      dp = dp * -1;                       // switches direction of panning 
+      //dp = dp * -1;                       // switches direction of panning 
   }
 
 
-  xyzFloat angle = myMPU9250.getAngles();
-
-  Serial.print(pan_angle);
-  Serial.print("\t ");
-  Serial.print(tilt_angle);
-  Serial.print("\t ");
-  Serial.println(angle.x);
+//  xyzFloat angle = myMPU9250.getAngles();
+//
+//  Serial.print(pan_angle);
+//  Serial.print("\t ");
+//  Serial.print(tilt_angle);
+//  Serial.print("\t ");
+//  Serial.println(angle.x);
 
 
  

@@ -1,4 +1,4 @@
-void move_servos(double pan_angle, double tilt_angle) {
+void move_servos(double pan_angle, double tilt_angle, Servo pan_servo, Servo tilt_servo) {
 
   //Angle Ranges
   // pan = -35 to 35 deg

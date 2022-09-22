@@ -20,8 +20,8 @@ void setup() {
   
   pan_servo.attach(5);
   tilt_servo.attach(6);
-  move_servos(0, 0);
-
+  move_servos(0, 0, pan_servo, tilt_servo);
+  myMPU9250.autoOffsets();
  
   delay(1000);
 
@@ -37,8 +37,8 @@ void setup() {
   myMPU9250.enableAccDLPF(true);
   myMPU9250.setAccDLPF(MPU9250_DLPF_6);  
   
-
-  servo_calibration(pan_servo);
+  
+  servo_calibration(tilt_servo);
     
   }
 
@@ -47,24 +47,19 @@ void loop() {
 
 
   val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
-  val = map(val, 0, 1023, -35, 35);     // scale it for use with the servo (value between 0 and 180)
-  move_servos(val, val);              // sets the servo position according to the scaled value
-  //tilt_servo.write(val);
+  double pan_angle = map(val, 0, 1023, -35, 35);     
+  double tilt_angle = map(val, 0, 1023, -15, 35);   
+  move_servos(0, tilt_angle, pan_servo, tilt_servo);  
+
   delay(15); 
 
 
-  
-
   xyzFloat angle = myMPU9250.getAngles();
 
-  //double plot_val;
-
-  Serial.print(val);
+  Serial.print(pan_angle);
   Serial.print("\t ");
-//  Serial.print(angle.x);
-//  Serial.print("\t ");
-//  Serial.print(angle.y);
-//  Serial.print("\t ");
+  Serial.print(tilt_angle);
+  Serial.print("\t ");
   Serial.println(angle.x);
 
 

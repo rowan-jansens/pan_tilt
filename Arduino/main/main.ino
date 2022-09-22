@@ -5,13 +5,20 @@ Servo pan_servo;  // create servo object to control a servo
 Servo tilt_servo;
 
 
-int potpin = A0;  // analog pin used to connect the potentiometer
+int potpin = A1;  // analog pin used to connect the potentiometer
 int val;    // variable to read the value from the analog pin
+const int dist_pin = A0; // distance sensor pin
 
 #include <MPU9250_WE.h>
 #include <Wire.h>
 #define MPU9250_ADDR 0x68
 MPU9250_WE myMPU9250 = MPU9250_WE(MPU9250_ADDR);
+
+// STARTING SERVO POSITION INITIALIZATION
+int pos = 0;
+int start_psweep = -35;                               // - 35 degrees
+int start_tsweep = -15;                               // -15 degrees
+int dp = 2;                                           // change in the pan servo position at a time 
 
 void setup() {
   Serial.begin(115200);
@@ -48,12 +55,53 @@ void setup() {
 void loop() {
 
 
-  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
-  double pan_angle = map(val, 0, 1023, -35, 35);     
-  double tilt_angle = map(val, 0, 1023, -15, 35);   
-  move_servos(0, tilt_angle);  
+//  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
+//  double pan_angle = map(val, 0, 1023, -35, 35);     
+//  double tilt_angle = map(val, 0, 1023, -15, 35);   
+//  move_servos(0, tilt_angle);  
+//
+//  delay(15); 
 
-  delay(15); 
+
+  // Moves servo into scanning position
+  pan_servo.write(pos);                               // initialize position of pan servo
+  tilt_servo.write(pos);
+  pan_servo.write(start_psweep);                      // moves to left side to begin the sweep
+  tilt_servo.write(start_tsweep);                     // initialize position of tilt servo
+
+
+  // Variables for calculating avg dist points
+  int store;
+  int avg;
+  int dist;
+  int i;
+
+
+  // Looping sweep
+  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 5) {           // looping the tilt servo 
+      for (start_psweep = -35; start_psweep <= 35; start_psweep += dp) {      // looping the pan servo
+          avg = 0;
+          store = 0;
+
+          // pans then mini tilts 
+          move_servos(start_psweep, start_tsweep);
+
+          // takes data at the mini tilts peak
+          for (i = 0; i <= 10; i++) {
+            dist = analogRead(dist_pin);
+            store = store + dist;
+          }
+          // takes the average of ten data pts and prints to serial
+          avg = store/10;
+          Serial.print("serial = ");
+          Serial.println(avg);
+
+          // mini delay before tilts back down then loops again
+          delay(100);
+          tilt_servo.write(start_tsweep-5);
+      }
+      dp = dp * -1;                       // switches direction of panning 
+  }
 
 
   xyzFloat angle = myMPU9250.getAngles();

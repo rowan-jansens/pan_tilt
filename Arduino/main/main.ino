@@ -18,8 +18,8 @@ void setup() {
   Wire.begin();
 
   
-  pan_servo.attach(6);
-  tilt_servo.attach(9);
+  pan_servo.attach(5);
+  tilt_servo.attach(6);
   move_servos(0, 0);
 
  

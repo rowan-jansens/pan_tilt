@@ -1,4 +1,4 @@
-void move_servos(double pan_angle, double tilt_angle, Servo pan_servo, Servo tilt_servo) {
+void move_servos(double pan_angle, double tilt_angle) {
 
   //Angle Ranges
   // pan = -35 to 35 deg
@@ -22,11 +22,11 @@ void move_servos(double pan_angle, double tilt_angle, Servo pan_servo, Servo til
   p4 = 0.01635;
   p5 = 2.391;
   p6 = 60.68;
-  tilt_servo_angle = (p1 * pow(pan_angle, 5)) +
-                     (p2 * pow(pan_angle, 4)) +
-                     (p3 * pow(pan_angle, 3)) +
-                     (p4 * pow(pan_angle, 2)) +
-                     (p5 * pan_angle) + p6;
+  tilt_servo_angle = (p1 * pow(tilt_angle, 5)) +
+                     (p2 * pow(tilt_angle, 4)) +
+                     (p3 * pow(tilt_angle, 3)) +
+                     (p4 * pow(tilt_angle, 2)) +
+                     (p5 * tilt_angle) + p6;
 
 
   //Write to servo

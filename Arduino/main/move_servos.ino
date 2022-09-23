@@ -6,7 +6,8 @@ void move_servos(double pan_angle, double tilt_angle) {
 
   //tranfer function for pan angle
   //linear fit
-  double pan_servo_angle = (pan_angle + 42.9390) / 0.4771;
+
+  double pan_servo_angle = (-1 * pan_angle * 2.1417) + 89.0776;
 
   //Write to servo
   pan_servo.write(pan_servo_angle);

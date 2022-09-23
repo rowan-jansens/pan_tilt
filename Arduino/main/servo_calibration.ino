@@ -1,11 +1,13 @@
 void servo_calibration(Servo servo){
 
   
-    servo.write(0); 
+    servo.write(88); 
+    delay(1000);
     myMPU9250.autoOffsets();
     delay(1000);
-  
-    for (int i = 0 ; i<180 ; i+=10){
+    servo.write(0); 
+    delay(1000);
+    for (int i = 0 ; i<180 ; i+=1){
     servo.write(i); 
     delay(50);
     double cur_sum = 0;

@@ -119,5 +119,30 @@ xlabel("Distance(cm)");
 ylabel("Sensor Value");
 legend("Poly", "Inv", "Data");
 title("Sensor Value over Distance(cm)");
+%%
+load('../data_reading.mat')
+
+valid_idx = data(:,1) ~= 0;
+data = data(valid_idx, :);
+
+global_measurement = zeros(size(data));
+
+%transformation to get position of sensor in global reference frame
+
+theta = data(:,1);
+phi = data(:,2);
+
+
+for i=1:length(theta)
+origin2tilt = [1 1.5 0.5];              %distance from origin to tilt axis in "pan" cooridinate frame
+tilt2sensor = [0 2.5 1]*rotx(-phi(i));     %distance from tilt axis to sensor rotated to "pan" cooridinate frame
+origin2sensor = (origin2tilt + tilt2sensor)*rotz(-theta(i));   %add the two and rotate into the global frame
+
+global_measurement(i,:) = [origin2sensor];
+
+
+
+end
+
 
 

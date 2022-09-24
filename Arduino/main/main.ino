@@ -30,8 +30,8 @@ void setup() {
   
   pan_servo.attach(5);
   tilt_servo.attach(6);
-  move_servos(10, 10);
-  delay(1000);
+  move_servos(0, 0);
+  delay(5000);
   
 
   //=======IMU stuff=============
@@ -78,7 +78,7 @@ void loop() {
 
   while(j == 0){
   // Looping sweep
-  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 4) {           // looping the tilt servo 
+  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 1) {           // looping the tilt servo 
       while (start_psweep >= -35 && start_psweep < 35) {      // looping the pan servo
           avg = 0;
           store = 0;
@@ -86,12 +86,13 @@ void loop() {
           // pans then mini tilts 
           move_servos(start_psweep, start_tsweep);
 
-          delay(10);
+          delay(15);
 
           // takes data at the mini tilts peak
           for (i = 0; i <= 10; i++) {
             dist = analogRead(dist_pin);
             store = store + dist;
+ 
           }
           // takes the average of ten data pts and prints to serial
           avg = store/10;

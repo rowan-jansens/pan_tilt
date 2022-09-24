@@ -5,6 +5,8 @@ Servo pan_servo;  // create servo object to control a servo
 Servo tilt_servo;
 
 
+
+
 int potpin = A1;  // analog pin used to connect the potentiometer
 int val;    // variable to read the value from the analog pin
 const int dist_pin = A0; // distance sensor pin
@@ -17,7 +19,7 @@ MPU9250_WE myMPU9250 = MPU9250_WE(MPU9250_ADDR);
 // STARTING SERVO POSITION INITIALIZATION
 int pos = 0;
 int start_psweep = -35;                               // - 35 degrees
-int start_tsweep = -15;                               // -15 degrees
+int start_tsweep = -10;                               // -10 degrees
 int dp = 1;                                           // change in the pan servo position at a time 
 
 void setup() {
@@ -27,7 +29,7 @@ void setup() {
   
   pan_servo.attach(5);
   tilt_servo.attach(6);
-  move_servos(0, 0);
+  move_servos(10, 10);
   delay(1000);
   
 
@@ -71,15 +73,15 @@ void loop() {
   int dist;
   int i;
 
-
   // Looping sweep
-  for (start_tsweep = -10; start_tsweep <= 30; start_tsweep += 4) {           // looping the tilt servo 
-      for (start_psweep = -35; start_psweep <= 35; start_psweep += dp) {      // looping the pan servo
+  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 4) {           // looping the tilt servo 
+      while (start_psweep >= -35 && start_psweep < 35) {      // looping the pan servo
           avg = 0;
           store = 0;
 
           // pans then mini tilts 
           move_servos(start_psweep, start_tsweep);
+
           delay(10);
 
           // takes data at the mini tilts peak
@@ -89,14 +91,19 @@ void loop() {
           }
           // takes the average of ten data pts and prints to serial
           avg = store/10;
-          Serial.print("serial = ");
+          Serial.print(start_psweep);
+          Serial.print(",");
+          Serial.print(start_tsweep);
+          Serial.print(",");
           Serial.println(avg);
 
-          // mini delay before tilts back down then loops again
-          //delay(100);
-//          tilt_servo.write(start_tsweep-5);
+      start_psweep += dp;
       }
-      //dp = dp * -1;                       // switches direction of panning 
+
+      dp = dp * -1;    
+      start_psweep = start_psweep + dp;
+
+                         // switches direction of panning 
   }
 
 

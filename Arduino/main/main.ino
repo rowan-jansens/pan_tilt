@@ -19,9 +19,9 @@ MPU9250_WE myMPU9250 = MPU9250_WE(MPU9250_ADDR);
 
 // STARTING SERVO POSITION INITIALIZATION
 int pos = 0;
-int start_psweep = -35;                               // - 35 degrees
-int start_tsweep = -10;                               // -10 degrees
-int dp = 1;                                           // change in the pan servo position at a time 
+double start_psweep = -35;                               // - 35 degrees
+double start_tsweep = -10;                               // -10 degrees
+double dp = 0.5;                                           // change in the pan servo position at a time 
 
 void setup() {
   Serial.begin(115200);
@@ -31,7 +31,7 @@ void setup() {
   pan_servo.attach(5);
   tilt_servo.attach(6);
   move_servos(0, 0);
-  delay(5000);
+  delay(2000);
   
 
   //=======IMU stuff=============
@@ -69,17 +69,18 @@ void loop() {
 
 
   // Variables for calculating avg dist points
-  int store;
-  int avg;
-  int dist;
+double avg = 0;
+double store = 0;
+  double dist;
   int i;
   
 
 
   while(j == 0){
   // Looping sweep
-  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 1) {           // looping the tilt servo 
-      while (start_psweep >= -35 && start_psweep < 35) {      // looping the pan servo
+  for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 0.5) {           // looping the tilt servo 
+//      while (start_psweep >= -35 && start_psweep < 35) {      // looping the pan servo
+      for(start_psweep = -35 ; start_psweep < 35; start_psweep += 0.5){
           avg = 0;
           store = 0;
 
@@ -96,6 +97,7 @@ void loop() {
           }
           // takes the average of ten data pts and prints to serial
           avg = store/10;
+          //avg = 156.2 * exp(avg  *  -0.003732);
           Serial.print(start_psweep);
           Serial.print(",");
           Serial.print(start_tsweep);
@@ -105,17 +107,31 @@ void loop() {
 
       start_psweep += dp;
       }
+      move_servos(-35, start_tsweep);
 
-      dp = dp * -1;    
-      start_psweep = start_psweep + dp;
+      delay(800);
+//      dp = dp * -1;    
+//      start_psweep = start_psweep + dp;
 
                          // switches direction of panning 
   }
   j = 1;
   }
 
-  
-
+//        double avg = 0;
+//      double store = 0;
+//          // takes data at the mini tilts peak
+//          for (i = 0; i <= 10; i++) {
+//            dist = analogRead(dist_pin);
+//            store = store + dist;
+// 
+//          }
+//          // takes the average of ten data pts and prints to serial
+//          avg = store/10;
+//          avg = 156.2 * exp(avg  *  -0.003732);
+//          Serial.println(avg);
+//
+//          delay(100);
 
 
 //  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)

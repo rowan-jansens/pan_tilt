@@ -91,13 +91,13 @@ sen_val = [502, 392, 239, 178, 163, 137, 113, 106, 89];
 % dividing the vectors
 %X = dist ./ sen_val; 
 
-fit_x = linspace(89, 502, 100);
+fit_x = linspace(20, 150, 100);
 
 y_inv = 1.4e4./fit_x -9.129;
-% y_poly = 2.76e-6*fit_x.^4 - (0.001376*fit_x.^3) + (0.2563*fit_x.^2) - (21.86*fit_x) + 848.7;
-% 
-% 
-% y_poly = 1./y_poly;
+y_poly = 2.76e-6*fit_x.^4 - (0.001376*fit_x.^3) + (0.2563*fit_x.^2) - (21.86*fit_x) + 848.7;
+
+
+y_poly = 1/y_poly;
 
 
 my_green = [73 201 14] ./ 255;

@@ -10,6 +10,7 @@ Servo tilt_servo;
 int potpin = A1;  // analog pin used to connect the potentiometer
 int val;    // variable to read the value from the analog pin
 const int dist_pin = A0; // distance sensor pin
+int j = 0;
 
 #include <MPU9250_WE.h>
 #include <Wire.h>
@@ -34,12 +35,12 @@ void setup() {
   
 
   //=======IMU stuff=============
-  if(!myMPU9250.init()){
-    Serial.println("MPU9250 does not respond");
-  }
-  else{
-    Serial.println("MPU9250 is connected");
-  }
+//  if(!myMPU9250.init()){
+//    Serial.println("MPU9250 does not respond");
+//  }
+//  else{
+//    Serial.println("MPU9250 is connected");
+//  }
   myMPU9250.setAccRange(MPU9250_ACC_RANGE_2G);
   myMPU9250.enableAccDLPF(true);
   myMPU9250.setAccDLPF(MPU9250_DLPF_6);  
@@ -72,7 +73,10 @@ void loop() {
   int avg;
   int dist;
   int i;
+  
 
+
+  while(j == 0){
   // Looping sweep
   for (start_tsweep = -15; start_tsweep <= 35; start_tsweep += 4) {           // looping the tilt servo 
       while (start_psweep >= -35 && start_psweep < 35) {      // looping the pan servo
@@ -95,7 +99,8 @@ void loop() {
           Serial.print(",");
           Serial.print(start_tsweep);
           Serial.print(",");
-          Serial.println(avg);
+          Serial.print(avg);
+          Serial.write(10);
 
       start_psweep += dp;
       }
@@ -105,6 +110,10 @@ void loop() {
 
                          // switches direction of panning 
   }
+  j = 1;
+  }
+
+  
 
 
 

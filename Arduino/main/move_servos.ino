@@ -7,7 +7,7 @@ void move_servos(double pan_angle, double tilt_angle) {
   //tranfer function for pan angle
   //linear fit
 
-  double pan_servo_angle = (-1 * pan_angle * 2.1417) + 89.0776;
+  double pan_servo_angle = (-1 * pan_angle * 2.1469) + 89.9460;
 
   //Write to servo
   pan_servo.write(pan_servo_angle);
@@ -17,12 +17,12 @@ void move_servos(double pan_angle, double tilt_angle) {
   //tranfer function for tilt angle
   //N5 polynomial fit
   double p1, p2, p3, p4, p5, p6, tilt_servo_angle;
-  p1 = 2.778e-6;
-  p2 = -1.304e-4;
-  p3 = 0.001307;
-  p4 = 0.01635;
-  p5 = 2.391;
-  p6 = 60.68;
+  p1 = 2.443e-06;
+  p2 = -9.927e-05;
+  p3 = 0.0005171;
+  p4 = 0.02832;
+  p5 = 2.231;
+  p6 = 51.82;
   tilt_servo_angle = (p1 * pow(tilt_angle, 5)) +
                      (p2 * pow(tilt_angle, 4)) +
                      (p3 * pow(tilt_angle, 3)) +

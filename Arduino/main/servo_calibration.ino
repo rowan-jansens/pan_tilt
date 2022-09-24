@@ -1,7 +1,7 @@
 void servo_calibration(Servo servo){
 
   
-    servo.write(88); 
+    servo.write(50); 
     delay(1000);
     myMPU9250.autoOffsets();
     delay(1000);
@@ -18,7 +18,7 @@ void servo_calibration(Servo servo){
     }
     Serial.print(i);
     Serial.print(",");
-    Serial.println(cur_sum / 10);
+    Serial.println(cur_sum / 10 * -1);
   }
 
 }

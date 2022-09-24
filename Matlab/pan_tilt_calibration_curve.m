@@ -27,8 +27,38 @@ ylabel("Servo Angle")
 xlabel("Pan Angle")
 
 %%
-data = readtable("tilt_callib.csv")
-plot(data.Var1, data.Var2)
+data = readtable("tilt_calib_data.csv")
+data.measured  = data.Var2;
+data.command  = data.Var1;
+
+  p1 = 2.443e-06;
+  p2 = -9.927e-05;
+  p3 = 0.0005171;
+  p4 = 0.02832;
+  p5 = 2.231;
+  p6 = 51.82;
+
+  tilt_angle = linspace(-20, 38, 100);
+  
+  fit = (p1 * tilt_angle.^5) + (p2 * tilt_angle.^4) +(p3 * tilt_angle.^3) +(p4 * tilt_angle.^2) +(p5 * tilt_angle) + p6;
+
+
+ 
+
+
+% x = data.Var1(10:100);
+% y = data.Var2(10:100);
+figure()
+clf
+hold on
+
+plot(data.measured, data.command, ".", "linewidth", 2)
+plot(tilt_angle, fit, "linewidth", 1)
+legend("Data", "Fit")
+grid on
+ylabel("Servo Angle")
+xlabel("Pan Angle")
+
 
 %%
 

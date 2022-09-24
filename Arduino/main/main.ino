@@ -27,7 +27,7 @@ void setup() {
   
   pan_servo.attach(5);
   tilt_servo.attach(6);
-  move_servos(10, 10);
+  move_servos(0, 0);
   delay(1000);
   
 
@@ -73,46 +73,48 @@ void loop() {
 
 
   // Looping sweep
-//  for (start_tsweep = -10; start_tsweep <= 30; start_tsweep += 4) {           // looping the tilt servo 
-//      for (start_psweep = -35; start_psweep <= 35; start_psweep += dp) {      // looping the pan servo
-//          avg = 0;
-//          store = 0;
-//
-//          // pans then mini tilts 
-//          move_servos(start_psweep, start_tsweep);
-//          delay(10);
-//
-//          // takes data at the mini tilts peak
-//          for (i = 0; i <= 10; i++) {
-//            dist = analogRead(dist_pin);
-//            store = store + dist;
-//          }
-//          // takes the average of ten data pts and prints to serial
-//          avg = store/10;
-//          Serial.print("serial = ");
-//          Serial.println(avg);
-//
-//          // mini delay before tilts back down then loops again
-//          //delay(100);
-////          tilt_servo.write(start_tsweep-5);
-//      }
-//      //dp = dp * -1;                       // switches direction of panning 
-//  }
+  for (start_tsweep = -10; start_tsweep <= 30; start_tsweep += 4) {           // looping the tilt servo 
+      for (start_psweep = -35; start_psweep <= 35; start_psweep += dp) {      // looping the pan servo
+          avg = 0;
+          store = 0;
+
+          // pans then mini tilts 
+          move_servos(start_psweep, start_tsweep);
+          delay(10);
+
+          // takes data at the mini tilts peak
+          for (i = 0; i <= 10; i++) {
+            dist = analogRead(dist_pin);
+            store = store + dist;
+          }
+          // takes the average of ten data pts and prints to serial
+          avg = store/10;
+          Serial.print("serial = ");
+          Serial.println(avg);
+
+          // mini delay before tilts back down then loops again
+          //delay(100);
+//          tilt_servo.write(start_tsweep-5);
+      }
+      //dp = dp * -1;                       // switches direction of panning 
+  }
 
 
 
-  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
-  double pan_angle = map(val, 0, 1023, -35, 35);     
-  double tilt_angle = map(val, 0, 1023, -15, 35);  
-  double raw_angle = map(val, 0, 1023, 0, 180);
-  move_servos(pan_angle, tilt_angle);  
-  delay(15); 
-  xyzFloat angle = myMPU9250.getAngles();
-  Serial.print(pan_angle);
-  Serial.print("\t ");
-  Serial.print(tilt_angle);
-  Serial.print("\t ");
-  Serial.println(angle.x);
+//  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
+//  double pan_angle = map(val, 0, 1023, -35, 35);     
+//  double tilt_angle = map(val, 0, 1023, -15, 35);  
+//  double raw_angle = map(val, 0, 1023, 0, 180);
+//  move_servos(0, tilt_angle);  
+//  delay(15); 
+//  xyzFloat angle = myMPU9250.getAngles();
+//  Serial.print(pan_angle);
+//  Serial.print("\t ");
+//  Serial.print(tilt_angle);
+//  Serial.print("\t ");
+//  Serial.print(raw_angle);
+//  Serial.print("\t ");
+//  Serial.println(angle.x * -1);
 
 
  

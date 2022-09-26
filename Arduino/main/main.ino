@@ -90,13 +90,13 @@ double store = 0;
           delay(15);
 
           // takes data at the mini tilts peak
-          for (i = 0; i <= 10; i++) {
+          for (i = 0; i <= 50; i++) {
             dist = analogRead(dist_pin);
             store = store + dist;
  
           }
           // takes the average of ten data pts and prints to serial
-          avg = store/10;
+          avg = store/50;
           //avg = 156.2 * exp(avg  *  -0.003732);
           Serial.print(start_psweep);
           Serial.print(",");

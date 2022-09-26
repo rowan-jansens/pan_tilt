@@ -129,7 +129,8 @@ p2 =    2.99e+04
 q1 =       125.6
 data(:,3) =  (p1.*data(:,3) + p2) ./ (data(:,3) + q1)
 
-valid_idx = (data(:,3) > 20) & (data(:,3) < 50);
+valid_idx = (data(:,3) > 10) & (data(:,3) < 60);
+% valid_idx = data(:,3) ~= 0;
 data = data(valid_idx, :);
 
 global_measurement = zeros(size(data));
@@ -158,7 +159,7 @@ end
 
 
 
-[x, y, z] = sph2cart(deg2rad(data(:,1) + 90), deg2rad(data(:,2)), data(:,3))
+[x, y, z] = sph2cart(deg2rad(data(:,1)+90), deg2rad(data(:,2)), data(:,3))
 
 x = x + global_measurement(:,1);
 y = y + global_measurement(:,2);

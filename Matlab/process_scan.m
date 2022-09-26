@@ -1,7 +1,7 @@
 
 
-% data = arduino.UserData.Data;
-data = data_raw;
+data = arduino.UserData.Data;
+% data = data_raw;
 
 
 
@@ -13,7 +13,7 @@ data(:,3) =  (p1.*data(:,3) + p2) ./ (data(:,3) + q1)
 
 
 %filter out data that is too far or too close
-valid_idx = (data(:,3) > 40) & (data(:,3) < 50);
+valid_idx = (data(:,3) > 20) & (data(:,3) < 100);
 data = data(valid_idx, :);
 
 

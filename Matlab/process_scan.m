@@ -13,8 +13,8 @@ data(:,3) =  (p1.*data(:,3) + p2) ./ (data(:,3) + q1)
 
 
 %filter out data that is too far or too close
-valid_idx = (data(:,3) > 20) & (data(:,3) < 100);
-data = data(valid_idx, :);
+% valid_idx = (data(:,3) > 30) & (data(:,3) < 40);
+% data = data(valid_idx, :);
 
 
 %transformation to get position of sensor in global reference frame
@@ -24,8 +24,8 @@ phi = data(:,2);
 
 
 for i=1:length(theta)
-    origin2tilt = [1 1.5 0.5];              %distance from origin to tilt axis in "pan" cooridinate frame
-    tilt2sensor = [0 2.5 1]*rotx(-phi(i));     %distance from tilt axis to sensor rotated to "pan" cooridinate frame
+    origin2tilt = [1 1.5 0.5];              %distance from origin to tilt axis in "pan" coordinate  frame
+    tilt2sensor = [0 2.5 1]*rotx(-phi(i));     %distance from tilt axis to sensor rotated to "pan" coordinate  frame
     origin2sensor = (origin2tilt + tilt2sensor)*rotz(-theta(i));   %add the two and rotate into the global frame
     sensor_offset(i,:) = origin2sensor;
 end
@@ -43,11 +43,42 @@ z = z + sensor_offset(:,3);
 figure()
 clf
 hold on
-% plot3(sensor_offset(:,1), sensor_offset(:,2), sensor_offset(:,3))
+plot3(sensor_offset(:,1), sensor_offset(:,2), sensor_offset(:,3))
 
-scatter3(x, y, z, 10,"filled", "MarkerFaceColor", [0.1 0.9 0.2])
-axis equal
-title("3D Scanner Plot")
+
+
+
+c = int16(data(:,3));
+scatter3(x, y, z, 70, c, "filled")
+colormap parula
+
+title("3D Scan Plot")
 xlabel("X (cm)")
 ylabel("Y (cm)")
-zlabel("Z (cm)")
+zlabel('Z (cm)')
+ax = gca; 
+ax.FontSize = 20; 
+axis equal
+
+gcf().set("position", [0 0 1000 700]);
+a = colorbar('east');
+a.Label.String = "\fontsize{20}Distance (cm)"
+view(2.71745452045097, 0.721104144663705);
+%%
+
+
+
+
+line = data(:,2) == 0;
+line = data(line,1:3)
+
+figure()
+clf
+hold on
+plot(line(:,1), line(:,3), "linewidth", 3)
+title("2D Scan")
+xlabel("X (cm)")
+ylabel("Y (cm)")
+
+ax = gca; 
+ax.FontSize = 16; 

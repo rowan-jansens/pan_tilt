@@ -31,7 +31,7 @@ void setup() {
   pan_servo.attach(5);
   tilt_servo.attach(6);
   move_servos(0, 0);
-  delay(2000);
+  delay(6000);
   
 
   //=======IMU stuff=============
@@ -105,7 +105,7 @@ double store = 0;
           Serial.print(avg);
           Serial.write(10);
 
-      start_psweep += dp;
+//      start_psweep += dp;
       }
       move_servos(-35, start_tsweep);
 

@@ -5,7 +5,7 @@ configureTerminator(arduino,"LF");
 
 
 
-num_data_points = 4000;
+num_data_points = 14000;
 
 %set up data struct to read
 arduino.UserData = struct("Data",zeros(num_data_points,3),"Count",1, "Points", num_data_points, "Running", true);
